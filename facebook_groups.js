@@ -12,7 +12,23 @@ if(location.href === 'about:blank') {
 
 } else if (location.href === groupsUrl) {
 
-// (() => {
+// (async () => {
+
+    // const sleep = ((timeout) => {
+    //     return new Promise(resolve => setTimeout(resolve, timeout));
+    // })
+
+    for(let i = 0; i < 5; i++) {
+        await sleep(5000, 10000);
+        window.scrollTo({
+            top: document.body.scrollHeight, // Go to the very bottom
+            left: 0,
+            behavior: 'smooth'               // This triggers the smooth animation
+        });
+    }
+
+    await sleep(5000, 10000);
+
 
     const posts = Array.from(document.querySelectorAll('[aria-posinset]'))
 
@@ -23,7 +39,12 @@ if(location.href === 'about:blank') {
             if(button.innerText === buttonText) {
                 button.click();
             }
+            console.log('clicked')
+
         }
+
+        await sleep(3000, 5000);
+
         const links = Array.from(post.querySelectorAll('a'))
             .map(a => ({href: a.href, title: a.innerText}));
 
