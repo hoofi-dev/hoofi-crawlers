@@ -41,16 +41,20 @@ if (location.href === groupsUrl) {
             text = text.replace(/^.$/gm, '');
             text = text.replace(/\n+/g, '\n');
 
-            let link = null;
+            let primaryHref = null;
             for (let lc of links) {
                 if (lc.href.includes('/posts/')) {
-                    link = lc.href;
+                    primaryHref = lc.href;
                 }
             }
 
-            const match = link?.match(/posts\/(\d+)/);
+            const images = Array.from(post.querySelectorAll('img'))
+                .filter(img => img.width > 20 && img.src)
+                .map(img => ({src: img.src}))
+
+            const match = primaryHref?.match(/posts\/(\d+)/);
             const id = match?.[0];
-            const result = {id, text, link};
+            const result = {id, text, links: [{href: primaryHref}], images};
             console.log(result);
 
             await publishItems([{id: id ?? '', data: result}]);
