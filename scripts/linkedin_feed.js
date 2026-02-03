@@ -4,35 +4,37 @@ await (async () => {
 
     const mainContainer = document.querySelector('main');
     for (let ix = 0; ix < 3; ix++) {
-        log(`scroll ${ix}`);
+        log(`scroll ix=${ix}, mainContainer.scrollHeight=${mainContainer.scrollHeight}`);
         mainContainer.scrollTo({
             top: mainContainer.scrollHeight,
             behavior: 'smooth'
         });
         await sleep(3000, 6000);
-
     }
 
-    const posts = Array.from(document.querySelectorAll('[data-testId="mainFeed"]>div'));
-    log(`got ${posts.length} posts`);
+    const maybePosts = Array.from(document.querySelectorAll('[data-testId="mainFeed"]>div'));
+    log(`got ${maybePosts.length} posts`);
 
-    const items = posts
+    const items = maybePosts
         //skip the non post cards at the top
-        .filter((post, ix) => ix > 2)
-        .map(elm => {
-            const images = Array.from(elm.querySelectorAll('img'))
+        .filter((post, ix) => !!post.querySelector('[data-testid="expandable-text-box"]'))
+        .map(post => {
+            const images = Array.from(post.querySelectorAll('img'))
                 .filter(img => img.naturalWidth > 100)
                 .map(img => ({src: img.src}))
 
-            const links = Array.from(elm.querySelectorAll('a'))
+            let links = Array.from(post.querySelectorAll('a'))
                 .map(a => ({href: a.href}))
 
-            let text = elm.innerText;
-            text = text.replace(/\n+/g, '\n');
-            text = text.replace(/Feed post\n/g, '');
+            links = links.filter(link => !link.href.includes('/search/'))
+            links = links.filter(link => !link.href.includes('/redir/'))
+
+            //deduplicate
+            links = [...new Map(links.map(link => [link.href, link])).values()];
+
+            const text = post.querySelector('[data-testid="expandable-text-box"]').innerText;
 
             return {
-                // elm,
                 text,
                 images,
                 links
@@ -48,8 +50,6 @@ await (async () => {
             dedupe: 'NEVER'
         }]);
     }
-
-
 
     log(`publishing done`);
 
