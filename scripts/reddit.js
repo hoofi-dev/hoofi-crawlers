@@ -83,6 +83,7 @@ async function extractRedditFeed(urlObj) {
             id: p.name,
             dedupe: 'FOREVER', // Store once, never duplicate
             data: {
+                id: p.name,
                 title: p.title,
                 text: p.selftext,
 
