@@ -1,9 +1,10 @@
 await (async () => {
 
     await onLoad();
+    await sleep(3000, 6000);
 
     const mainContainer = document.querySelector('main');
-    for (let ix = 0; ix < 3; ix++) {
+    for (let ix = 0; ix < 4; ix++) {
         log(`scroll ix=${ix}, mainContainer.scrollHeight=${mainContainer.scrollHeight}`);
         mainContainer.scrollTo({
             top: mainContainer.scrollHeight,
