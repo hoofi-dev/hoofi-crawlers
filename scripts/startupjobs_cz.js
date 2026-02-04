@@ -3,6 +3,9 @@
 await page.onLoad();
 
 let it = 0;
+let itemsCnt = 0;
+let salariesCnt = 0;
+
 async function getItems() {
     console.log('starting it=', it);
 
@@ -23,8 +26,16 @@ async function getItems() {
 
     let ix = 1;
     for(let item of member) {
-        const {id} = item;
+        const {id, skills} = item;
+        let salary = undefined;
+        if(item.salary) {
+            let {minimum, maximum} = item.salary;
+            salary = {minimum, maximum};
+            salariesCnt ++;
+        }
+
         console.log(`publishing item ${ix}/${member.length}`);
+        itemsCnt++;
 
         await page.publishItems([{
             id,
@@ -32,13 +43,13 @@ async function getItems() {
                 id,
                 title: byLocale(item.title),
                 html: byLocale(item.description),
-                links: [{href: `https://www.startupjobs.cz/nabidka/${item.displayId}/a`}]
+                links: [{href: `https://www.startupjobs.cz/nabidka/${item.displayId}/a`}],
+                salary,
+                skills: skills.map(skill => skill.name)
             }
         }])
     }
-
     it ++;
-
 }
 
 
@@ -62,6 +73,7 @@ do {
     hasNext = await loadNext();
 } while(hasNext);
 
+console.log(`found total items=${itemsCnt} salaries=${salariesCnt}`);
 
 function byLocale(loc) {
     if(loc['cs']) {
