@@ -2,12 +2,16 @@
 
 await page.onLoad();
 
-let it = 0;
-let itemsCnt = 0;
-let salariesCnt = 0;
+
+const stats = {
+    items: 0,
+    salaries: 0,
+    pages: 0,
+}
+
 
 async function getItems() {
-    console.log('starting it=', it);
+    console.log('page', stats.pages);
 
     const req = await page.waitFor(async() => {
         const reqs = await page.getRequests();
@@ -31,11 +35,11 @@ async function getItems() {
         if(item.salary) {
             let {minimum, maximum} = item.salary;
             salary = {minimum, maximum};
-            salariesCnt ++;
+            stats.salaries ++;
         }
 
         console.log(`publishing item ${ix}/${member.length}`);
-        itemsCnt++;
+        stats.items ++;
 
         await page.publishItems([{
             id,
@@ -49,7 +53,7 @@ async function getItems() {
             }
         }])
     }
-    it ++;
+    stats.pages ++;
 }
 
 
@@ -73,7 +77,7 @@ do {
     hasNext = await loadNext();
 } while(hasNext);
 
-console.log(`found total items=${itemsCnt} salaries=${salariesCnt}`);
+console.log(`stats`, stats);
 
 function byLocale(loc) {
     if(loc['cs']) {
@@ -82,5 +86,3 @@ function byLocale(loc) {
 
     return loc['en'];
 }
-
-await console.log();
