@@ -6,7 +6,7 @@ await page.onLoad();
 const stats = {
     items: 0,
     salaries: 0,
-    pages: 0,
+    paginationPages: 0,
 }
 
 
