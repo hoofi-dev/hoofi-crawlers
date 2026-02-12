@@ -24,7 +24,9 @@ if(currentPage.rawLink.ctx === 'product-page') {
 
     const id = window.location.href;
 
-    await page.publishItems([{id, data: {id, desc: desc[0].innerHTML, params: params[0].innerHTML + params[1].innerHTML, links: [{href: id}]}}]);
+    const html = [...desc, ...params].map(elm => elm.outerHTML).join('\n');
+
+    await page.publishItems([{id, data: {id, html, links: [{href: id}]}}]);
 
 } else {
 

@@ -1,0 +1,8 @@
+{
+  "title": "Mac-Point.cz",
+  "description": "Extract M MacBooks (description, params) for finding new offers with like new condition using AI filtering.",
+  "params": {
+    "start_url": "https://www.mac-point.cz/pocitace-mac/",
+    "interval": "60"
+  }
+}
