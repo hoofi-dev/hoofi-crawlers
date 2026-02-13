@@ -28,7 +28,7 @@ async function getItems() {
 
     const {member} = JSON.parse(body);
 
-    let ix = 1;
+    let ix = 0;
     for(let item of member) {
         const {id, skills} = item;
         let salary = undefined;
@@ -54,6 +54,7 @@ async function getItems() {
         }])
     }
     stats.pages ++;
+    ix ++;
 }
 
 

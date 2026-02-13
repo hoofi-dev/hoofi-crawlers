@@ -12,6 +12,7 @@ const stats = {
 const currentPage = await page.getCurrentPage();
 
 if(currentPage.rawLink.ctx === 'product-page') {
+    console.log('got product page', location.href);
     let desc = document.querySelectorAll('[data-testid="productCardShortDescr"]');
     let params = document.querySelectorAll('.detail-parameters');
 
@@ -29,7 +30,7 @@ if(currentPage.rawLink.ctx === 'product-page') {
     await page.publishItems([{id, data: {id, html, links: [{href: id}]}}]);
 
 } else {
-
+    console.log('got listing page');
     async function getLinks() {
 
         let hrefs = Array.from(document.querySelectorAll('[data-testid="productCards"] [data-micro="url"]')).map(a => a.href);
