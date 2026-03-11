@@ -1,0 +1,8 @@
+{
+  "title": "Sitemap example",
+  "description": "Load links from sitemap.",
+  "crawler_form": {
+    "startUrl": "https://www.mac-point.cz/pocitace-mac/",
+    "interval": "720"
+  }
+}

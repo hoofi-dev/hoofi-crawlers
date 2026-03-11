@@ -13,8 +13,10 @@ const stats = {
 async function getItems() {
     console.log('page', stats.pages);
 
+    console.log('waiting for background request')
     const req = await runner.waitFor(async() => {
         const reqs = await runner.getRequests();
+        await console.log('reqs', reqs.map(req => req.url));
         const match = reqs.find(req => req.url.includes('/api/search/offers'));
         if(match?.status === 200) {
             return match;
@@ -37,7 +39,7 @@ async function getItems() {
             salary = {minimum, maximum};
             stats.salaries ++;
         }
-
+        ix ++;
         console.log(`publishing item ${ix}/${member.length}`);
         stats.items ++;
 
@@ -54,19 +56,24 @@ async function getItems() {
         }])
     }
     stats.pages ++;
-    ix ++;
 }
 
 
 async function loadNext() {
     await runner.clearRequests();
     const buttons = document.querySelectorAll('button');
+
+    console.log('buttons.length', buttons.length);
+
+    await console.warn()
     for(let button of buttons) {
         if(button.innerText.includes('Načíst další stránku')) {
+            console.log('clicking next page button');
             button.click();
             return true;
         }
     }
+    console.log('next page button not found');
     return false;
 }
 
